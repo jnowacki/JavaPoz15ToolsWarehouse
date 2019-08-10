@@ -28,5 +28,25 @@ public class ToolDaoImpl implements ToolDao{
     @Override
     public void setAvailability(boolean isAvailable, long id) {
 
+//        INNE MOZLIWOSCI:
+//        for (int i = 0; i < tools.size(); i++) {
+//            if (tools.get(i).getId() == id) {
+//                tools.get(i).setAvailable(isAvailable);
+//                return;
+//            }
+//        }
+//
+//        for(Tool tool: tools) {
+//            if (tool.getId() == id) {
+//                tool.setAvailable(isAvailable);
+//                return;
+//            }
+//        }
+
+        tools.stream()
+                .filter(tool -> tool.getId() == id)
+                .findAny()
+                .ifPresent(tool -> tool.setAvailable(isAvailable));
+
     }
 }
