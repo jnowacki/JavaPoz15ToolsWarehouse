@@ -27,16 +27,17 @@ public class ToolController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
+        long id = Long.parseLong(req.getParameter("id"));
 
         switch (action) {
             case "take":
-                toolService.setAvailability(false);
+                toolService.setAvailability(false, id);
                 break;
             case "return":
-                toolService.setAvailability(true);
+                toolService.setAvailability(true, id);
                 break;
         }
 
-        resp.sendRedirect(getServletContext().getContextPath());
+        resp.sendRedirect(getServletContext().getContextPath() + "/");
     }
 }
