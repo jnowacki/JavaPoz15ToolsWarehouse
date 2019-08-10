@@ -11,6 +11,8 @@ public class UserServiceImpl implements UserService {
     public boolean checkIfValid (String login, String password) {
         User user = userDao.getUser(login);
 
-        return user.getLogin().equals(login) && user.getPassword().equals(password);
+        return user != null
+                && user.getLogin().equals(login)
+                && user.getPassword().equals(password);
     }
 }
