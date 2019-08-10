@@ -2,7 +2,13 @@ package pl.jnowacki.dao;
 
 import pl.jnowacki.model.Tool;
 import pl.jnowacki.model.ToolType;
+import pl.jnowacki.util.DbConnection;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +26,30 @@ public class ToolDaoImpl implements ToolDao{
     }
 
     @Override
-        public List<Tool> getAll() {
+    public List<Tool> getAll() {
+
+        List<Tool> tools = new ArrayList<>();
+
+        String selectSQL = "SELECT * FROM tools";
+
+        try (Connection dbConnection = DbConnection.getInstance().getDBConnection();
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(selectSQL)) {
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+
+                long toolId = rs.getLong("id");
+                String toolName = rs.getString("name");
+                ToolType toolType = ToolType.valueOf(rs.getString("type"));
+                boolean toolAvailability = rs.getBoolean("available");
+
+                tools.add(new Tool(toolId, toolName, toolType, toolAvailability));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 
         return tools;
     }
@@ -28,25 +57,19 @@ public class ToolDaoImpl implements ToolDao{
     @Override
     public void setAvailability(boolean isAvailable, long id) {
 
-//        INNE MOZLIWOSCI:
-//        for (int i = 0; i < tools.size(); i++) {
-//            if (tools.get(i).getId() == id) {
-//                tools.get(i).setAvailable(isAvailable);
-//                return;
-//            }
-//        }
-//
-//        for(Tool tool: tools) {
-//            if (tool.getId() == id) {
-//                tool.setAvailable(isAvailable);
-//                return;
-//            }
-//        }
+        String selectSQL = "UPDATE tools SET available = ? WHERE id = ?";
 
-        tools.stream()
-                .filter(tool -> tool.getId() == id)
-                .findAny()
-                .ifPresent(tool -> tool.setAvailable(isAvailable));
+        try (Connection dbConnection = DbConnection.getInstance().getDBConnection();
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(selectSQL)) {
+
+            preparedStatement.setBoolean(1, isAvailable);
+            preparedStatement.setLong(2, id);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 }
