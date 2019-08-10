@@ -15,6 +15,7 @@
 <body>
 
 <form action="${pageContext.request.contextPath}/login" method="post">
+    <input type="hidden" name="action" value="login">
     Username: <input type="text" name="username"><br>
     Password: <input type="text" name="password"><br>
     <input type="submit" value="Log in">

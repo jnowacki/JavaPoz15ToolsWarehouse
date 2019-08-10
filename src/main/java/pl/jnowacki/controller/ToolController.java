@@ -38,5 +38,7 @@ public class ToolController extends HttpServlet {
         }
 
         resp.sendRedirect(getServletContext().getContextPath() + "/");
+
+        req.getSession().invalidate();
     }
 }
