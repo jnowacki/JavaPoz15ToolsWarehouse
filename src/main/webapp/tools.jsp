@@ -17,6 +17,14 @@
     table, th, td {
         border: 1px solid black;
     }
+
+    .red {
+        background-color: red;
+    }
+
+    .green {
+        background-color: green;
+    }
 </style>
 
 <body>
@@ -33,10 +41,9 @@
             <td>${tool.id}</td>
             <td>${tool.name}</td>
             <td>${tool.type}</td>
-            <td>${tool.available}</td>
+            <td class="${tool.available ? 'green' : 'red'}"></td>
         </tr>
     </c:forEach>
-
 </table>
 
 </body>
