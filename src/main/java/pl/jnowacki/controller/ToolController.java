@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/")
+@WebServlet(name = "ToolServlet", value = "/")
 public class ToolController extends HttpServlet {
 
     private final ToolService toolService = new ToolServiceImpl();
@@ -20,7 +20,6 @@ public class ToolController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("tools", toolService.getAllTools());
-
         getServletContext().getRequestDispatcher("/tools.jsp").forward(req, resp);
     }
 

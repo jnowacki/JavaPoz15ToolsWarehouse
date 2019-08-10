@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -17,6 +19,10 @@
     Password: <input type="text" name="password"><br>
     <input type="submit" value="Log in">
 </form>
+
+<c:if test="${requestScope.invalidData}">
+    <h1>Login data invalid</h1>
+</c:if>
 
 </body>
 </html>
