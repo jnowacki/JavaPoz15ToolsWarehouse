@@ -23,4 +23,20 @@ public class ToolController extends HttpServlet {
 
         getServletContext().getRequestDispatcher("/tools.jsp").forward(req, resp);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+
+        switch (action) {
+            case "take":
+                toolService.setAvailability(false);
+                break;
+            case "return":
+                toolService.setAvailability(true);
+                break;
+        }
+
+        resp.sendRedirect(getServletContext().getContextPath());
+    }
 }
